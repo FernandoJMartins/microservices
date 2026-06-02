@@ -11,11 +11,11 @@ func GetEnv() string {
 }
 
 func GetDataSourceURL() string {
-	return getEnvironmentValue(" DATA_SOURCE_URL ")
+	return getEnvironmentValue("DATA_SOURCE_URL")
 }
 
 func GetApplicationPort() int {
-	portStr := getEnvironmentValue(" APPLICATION_PORT ")
+	portStr := getEnvironmentValue("APPLICATION_PORT")
 	port, err := strconv.Atoi(portStr)
 
 	if err != nil {
