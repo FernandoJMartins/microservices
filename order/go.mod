@@ -21,3 +21,8 @@ require (
 	google.golang.org/grpc v1.81.1
 	gorm.io/gorm v1.30.0 // indirect
 )
+
+
+require github.com/FernandoJMartins/microservices-proto/golang/payment v0.0.0-00010101000000-000000000000
+
+replace github.com/FernandoJMartins/microservices-proto/golang/payment => ../../microservices-proto/golang/payment
