@@ -22,6 +22,19 @@ func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 	}
 
 	paymentErr := a.payment.Charge(&order)
+
+	if paymentErr != nil {
+		order.Status = "Cancelled"
+	} else {
+		order.Status = "Paid"
+	}
+
+	err = a.db.Save(&order)
+
+	if err != nil {
+		return domain.Order{}, err
+	}
+
 	if paymentErr != nil {
 		return domain.Order{}, paymentErr
 	}
