@@ -5,7 +5,6 @@ go 1.25.4
 require gorm.io/driver/mysql v1.6.0
 
 require (
-	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260226221140-a57be14db171 // indirect
@@ -20,9 +19,16 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/grpc v1.81.1
-	gorm.io/gorm v1.30.0 // indirect
+	gorm.io/gorm v1.30.0
 )
 
 require github.com/FernandoJMartins/microservices-proto/golang/payment v0.0.0-00010101000000-000000000000
 
+require (
+	github.com/FernandoJMartins/microservices-proto/golang/shipping v0.0.0-00010101000000-000000000000
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+)
+
 replace github.com/FernandoJMartins/microservices-proto/golang/payment => ../../microservices-proto/golang/payment
+
+replace github.com/FernandoJMartins/microservices-proto/golang/shipping => ../../microservices-proto/golang/shipping

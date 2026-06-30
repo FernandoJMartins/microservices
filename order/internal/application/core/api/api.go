@@ -8,12 +8,13 @@ import (
 )
 
 type Application struct {
-	db      ports.DBPort
-	payment ports.PaymentPort
+	db       ports.DBPort
+	payment  ports.PaymentPort
+	shipping ports.ShippingPort
 }
 
-func NewApplication(db ports.DBPort, payment ports.PaymentPort) *Application {
-	return &Application{db: db, payment: payment}
+func NewApplication(db ports.DBPort, payment ports.PaymentPort, shipping ports.ShippingPort) *Application {
+	return &Application{db: db, payment: payment, shipping: shipping}
 }
 
 func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
@@ -61,6 +62,13 @@ func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 
 	if paymentErr != nil {
 		return domain.Order{}, paymentErr
+	}
+
+	shippingErr := a.shipping.Schedule(&order)
+	if shippingErr != nil {
+		order.Status = "Cancelled"
+		a.db.Save(&order)
+		return domain.Order{}, shippingErr
 	}
 
 	return order, nil
