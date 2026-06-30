@@ -19,7 +19,6 @@ func NewApplication(db ports.DBPort, payment ports.PaymentPort) *Application {
 func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 
 	var totalItems int32
-
 	for _, item := range order.OrderItems {
 		totalItems += item.Quantity
 	}
@@ -32,8 +31,17 @@ func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 		return domain.Order{}, status.Errorf(codes.InvalidArgument, "Order cannot have zero items.")
 	}
 
-	err := a.db.Save(&order)
+	for _, item := range order.OrderItems {
+		product, err := a.db.GetProductByCode(item.ProductCode)
+		if err != nil {
+			return domain.Order{}, status.Errorf(codes.NotFound, "Product %s not found.", item.ProductCode)
+		}
+		if product.Quantity < item.Quantity {
+			return domain.Order{}, status.Errorf(codes.InvalidArgument, "Product %s has insufficient stock. Available: %d, Requested: %d.", item.ProductCode, product.Quantity, item.Quantity)
+		}
+	}
 
+	err := a.db.Save(&order)
 	if err != nil {
 		return domain.Order{}, err
 	}
@@ -47,7 +55,6 @@ func (a *Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 	}
 
 	err = a.db.Save(&order)
-
 	if err != nil {
 		return domain.Order{}, err
 	}

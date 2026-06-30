@@ -16,6 +16,13 @@ type OrderItem struct {
 	Quantity    int32   `json:"quantity"`
 }
 
+type Product struct {
+	ID          int64  `json:"id"`
+	ProductCode string `json:"product_code"`
+	Name        string `json:"name"`
+	Quantity    int32  `json:"quantity"`
+}
+
 func NewOrder(customerId int64, orderItems []OrderItem) Order {
 	return Order{
 		CreatedAt:  time.Now().Unix(),

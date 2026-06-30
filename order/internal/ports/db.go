@@ -5,4 +5,5 @@ import "github.com/FernandoJMartins/microservices/order/internal/application/cor
 type DBPort interface {
 	Get(id string) (domain.Order, error)
 	Save(*domain.Order) error
+	GetProductByCode(productCode string) (domain.Product, error)
 }
